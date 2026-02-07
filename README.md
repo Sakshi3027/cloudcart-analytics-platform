@@ -49,6 +49,15 @@ CloudCart is a **production-ready microservices platform** demonstrating modern 
                   └─────────────────┘
 ```
 
+## Architecture Diagrams
+
+Detailed architecture documentation and diagrams:
+
+- [System Architecture](docs/diagrams/system-architecture.md) - Complete system overview
+- [Order Flow Diagram](docs/diagrams/order-flow.md) - End-to-end order creation flow
+
+---
+
 ### Technology Stack
 
 #### Backend Services
