@@ -1,0 +1,14 @@
+{
+  "user_id": "04824be1-792e-447c-9518-9ff0b65de949",
+  "items": [
+    {
+      "product_id": "112aed85-a5a9-4012-aa3a-a060a0bd958f",
+      "quantity": 2
+    },
+    {
+      "product_id": "4faf712d-b9c3-4678-b847-f3670d6c6945",
+      "quantity": 1
+    }
+  ],
+  "shipping_address": "123 Main St, San Francisco, CA 94105"
+}
