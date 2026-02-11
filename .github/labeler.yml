@@ -1,0 +1,21 @@
+# Add labels based on changed files
+documentation:
+  - '**/*.md'
+  - 'docs/**/*'
+
+backend:
+  - 'services/**/*'
+
+frontend:
+  - 'dashboard/**/*'
+
+ci/cd:
+  - '.github/**/*'
+
+docker:
+  - '**/Dockerfile'
+  - 'docker-compose.yml'
+
+dependencies:
+  - '**/package.json'
+  - '**/requirements.txt'
