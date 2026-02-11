@@ -19,4 +19,13 @@ export const analyticsAPI = {
   getOrderStatus: () => api.get('/api/analytics/orders/status-distribution'),
 };
 
+// AI API
+export const aiAPI = {
+  getPopularProducts: (limit = 5) => api.get(`/api/ai/recommendations/popular?limit=${limit}`),
+  getUserRecommendations: (userId, limit = 5) => api.get(`/api/ai/recommendations/user/${userId}?limit=${limit}`),
+  getSimilarProducts: (productId, limit = 5) => api.get(`/api/ai/recommendations/product/${productId}?limit=${limit}`),
+  trainModel: () => api.post('/api/ai/train'),
+  getModelStatus: () => api.get('/api/ai/model/status'),
+};
+
 export default api;

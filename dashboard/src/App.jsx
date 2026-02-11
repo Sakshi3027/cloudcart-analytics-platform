@@ -5,6 +5,7 @@ import StatCard from './components/StatCard';
 import SalesChart from './components/SalesChart';
 import TopProducts from './components/TopProducts';
 import OrderStatus from './components/OrderStatus';
+import AIRecommendations from './components/AIRecommendations';
 import './App.css';
 
 function App() {
@@ -141,7 +142,7 @@ function App() {
               </h1>
             </div>
             <p style={{ color: '#94a3b8', fontSize: '1.125rem', margin: 0 }}>
-              Real-time business insights and metrics
+              Real-time business insights with AI-powered recommendations
             </p>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -178,7 +179,7 @@ function App() {
         </div>
       </div>
 
-      {/* Stats Grid - Full Width */}
+      {/* Stats Grid */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
@@ -215,7 +216,7 @@ function App() {
         />
       </div>
 
-      {/* Charts Row - Full Width */}
+      {/* Charts Row */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))',
@@ -226,8 +227,16 @@ function App() {
         <OrderStatus distribution={dashboard?.order_status} />
       </div>
 
-      {/* Top Products - Full Width */}
-      <TopProducts products={dashboard?.top_products} />
+      {/* Products and AI Recommendations Row */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))',
+        gap: '2rem',
+        marginBottom: '2rem'
+      }}>
+        <TopProducts products={dashboard?.top_products} />
+        <AIRecommendations />
+      </div>
 
       {/* Footer */}
       <div style={{
@@ -236,7 +245,7 @@ function App() {
         color: '#64748b',
         fontSize: '0.875rem'
       }}>
-        <p>Built with React • Real-time Analytics • Event-Driven Architecture</p>
+        <p>Built with React • Real-time Analytics • AI-Powered Recommendations • Event-Driven Architecture</p>
       </div>
     </div>
   );

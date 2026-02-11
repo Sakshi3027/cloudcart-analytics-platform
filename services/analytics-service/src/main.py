@@ -1,16 +1,18 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from src.api.routes import router
+from src.api.routes import router as analytics_router
+from src.api.ai_routes import router as ai_router
+from src.ai.recommender import recommender
 from src.utils.logger import logger
 import os
 
 app = FastAPI(
-    title="Analytics Service",
-    description="Real-time analytics and metrics for CloudCart Platform",
-    version="1.0.0"
+    title="CloudCart Analytics API",
+    description="Real-time analytics and AI-powered recommendations",
+    version="2.0.0"
 )
 
-# CORS middleware
+# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -19,29 +21,37 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include API routes
-app.include_router(router)
+# Include routers
+app.include_router(analytics_router, prefix="/api/analytics", tags=["Analytics"])
+app.include_router(ai_router, prefix="/api/ai", tags=["AI Recommendations"])
+
+@app.on_event("startup")
+async def startup_event():
+    """Train recommendation model on startup"""
+    logger.info("Starting Analytics API with AI capabilities...")
+    # Train model in background
+    try:
+        recommender.train()
+        logger.info("AI recommendation model initialized")
+    except Exception as e:
+        logger.error(f"Failed to initialize AI model: {e}")
+
+@app.get("/health")
+async def health_check():
+    return {
+        "success": True,
+        "message": "Analytics Service with AI is healthy",
+        "data": {
+            "service": "analytics-service",
+            "status": "UP",
+            "ai_enabled": True
+        }
+    }
 
 @app.get("/")
 async def root():
     return {
-        "service": "analytics-service",
-        "status": "running",
-        "version": "1.0.0"
+        "message": "CloudCart Analytics API with AI",
+        "version": "2.0.0",
+        "features": ["Real-time Analytics", "AI Recommendations"]
     }
-
-@app.get("/health")
-async def health():
-    return {
-        "success": True,
-        "message": "Service is healthy",
-        "data": {
-            "service": "analytics-service",
-            "status": "UP"
-        }
-    }
-
-if __name__ == "__main__":
-    import uvicorn
-    port = int(os.getenv("PORT", 3004))
-    uvicorn.run(app, host="0.0.0.0", port=port)
