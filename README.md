@@ -1,35 +1,56 @@
 # CloudCart Analytics Platform
 
-A production-grade, event-driven microservices e-commerce platform with real-time analytics
+> A production-grade, event-driven microservices e-commerce platform with real-time analytics and AI-powered recommendations
 
+[![Test Services](https://github.com/Sakshi3027/cloudcart-analytics-platform/actions/workflows/test.yml/badge.svg)](https://github.com/Sakshi3027/cloudcart-analytics-platform/actions/workflows/test.yml)
+[![Build & Security](https://github.com/Sakshi3027/cloudcart-analytics-platform/actions/workflows/build.yml/badge.svg)](https://github.com/Sakshi3027/cloudcart-analytics-platform/actions/workflows/build.yml)
+[![CodeQL](https://github.com/Sakshi3027/cloudcart-analytics-platform/actions/workflows/codeql.yml/badge.svg)](https://github.com/Sakshi3027/cloudcart-analytics-platform/actions/workflows/codeql.yml)
 [![Microservices](https://img.shields.io/badge/architecture-microservices-blue)](https://microservices.io/)
-[![Event-Driven](https://img.shields.io/badge/pattern-event--driven-green)](https://www.enterpriseintegrationpatterns.com/patterns/messaging/EventDrivenArchitecture.html)
+[![Event-Driven](https://img.shields.io/badge/pattern-event--driven-green)](https://www.enterpriseintegrationpatterns.com/)
 [![Docker](https://img.shields.io/badge/docker-containerized-blue)](https://www.docker.com/)
-[![Kubernetes Ready](https://img.shields.io/badge/kubernetes-ready-326CE5)](https://kubernetes.io/)
+[![AI Powered](https://img.shields.io/badge/AI-ML%20Powered-purple)](https://scikit-learn.org/)
 
 ## Overview
 
-CloudCart is a **production-ready microservices platform** demonstrating modern cloud-native architecture patterns used by companies like Netflix, Uber, and Airbnb. It showcases event-driven design, real-time data processing, and scalable system architecture.
+CloudCart is a **production-ready microservices platform** demonstrating modern cloud-native architecture patterns used by companies like Netflix, Uber, and Airbnb. It features event-driven design, real-time data processing, AI-powered recommendations, and a beautiful analytics dashboard.
 
-### Key Features
+###  Key Features
 
--  **Event-Driven Architecture** - Apache Kafka for asynchronous communication
--  **Real-Time Analytics** - ClickHouse + Apache Spark for instant insights
--  **Secure Authentication** - JWT-based auth with bcrypt password hashing
--  **High Performance** - Redis caching, optimized queries, connection pooling
--  **Containerized** - Docker Compose orchestration, production-ready images
--  **Kubernetes Ready** - Designed for cloud deployment
--  **Full Observability** - Structured logging, health checks, metrics ready
+- **Event-Driven Architecture** - Apache Kafka for async communication
+- **Real-Time Analytics** - ClickHouse columnar database for instant insights
+- **AI Recommendations** - ML-powered product recommendations (scikit-learn)
+- **Beautiful Dashboard** - React with real-time data visualization
+- **Secure Authentication** - JWT-based auth with bcrypt password hashing
+- **High Performance** - Redis caching, optimized queries, connection pooling
+- **Containerized** - Docker Compose orchestration, production-ready
+- **Kubernetes Ready** - Designed for cloud deployment
+- **Full Observability** - Structured logging, health checks, CI/CD
 
 ---
 
-##  Architecture
+## Dashboard Preview
 
-### System Overview
+### Real-Time Analytics Dashboard
+> Beautiful dark-themed dashboard with live metrics, sales charts, and AI recommendations
+
+**Features:**
+- Real-time revenue and order metrics
+- Sales trend visualization (Recharts)
+- AI-powered product recommendations widget
+- Auto-refresh every 30 seconds
+- Fully responsive design
+
+---
+
+## Architecture
 ```
 ┌─────────────────────────────────────────────────────────┐
+│                   React Dashboard                       │
+│         (Real-time Analytics + AI Widgets)              │
+└─────────────────────────────────────────────────────────┘
+                          ║
+┌─────────────────────────────────────────────────────────┐
 │                     API Gateway                         │
-│              (Rate Limiting + Auth)                     │
 └─────────────────────────────────────────────────────────┘
                           ║
         ╔═════════════════╬═════════════════╗
@@ -40,386 +61,244 @@ CloudCart is a **production-ready microservices platform** demonstrating modern 
 │   PostgreSQL   │  │   PostgreSQL  │  │   PostgreSQL  │
 │   Redis Cache  │  │   Redis Cache │  │   Kafka Pub   │
 └────────────────┘  └───────────────┘  └───────────────┘
-                          ║
-                  ┌───────▼────────┐
-                  │Analytics Service│
-                  │    Python       │
-                  │  Kafka Consumer │
-                  │   ClickHouse    │
-                  └─────────────────┘
+                                               ║
+                                    ┌──────────▼──────────┐
+                                    │   Analytics Service  │
+                                    │   Python + FastAPI   │
+                                    │   Kafka Consumer     │
+                                    │   ClickHouse OLAP    │
+                                    │   ML Recommender     │
+                                    └─────────────────────┘
 ```
-
-## Architecture Diagrams
-
-Detailed architecture documentation and diagrams:
-
-- [System Architecture](docs/diagrams/system-architecture.md) - Complete system overview
-- [Order Flow Diagram](docs/diagrams/order-flow.md) - End-to-end order creation flow
-
----
 
 ### Technology Stack
 
-#### Backend Services
-- **User Service**: Node.js + Express + PostgreSQL + Redis + JWT
-- **Product Service**: Node.js + Express + PostgreSQL + Redis
-- **Order Service**: Node.js + Express + PostgreSQL + Kafka
-- **Analytics Service**: Python + FastAPI + ClickHouse + Kafka
-
-#### Infrastructure
-- **Databases**: PostgreSQL (3 instances), ClickHouse
-- **Cache**: Redis
-- **Message Broker**: Apache Kafka + Zookeeper
-- **Container Orchestration**: Docker Compose
-- **Deployment Ready**: Kubernetes manifests included
-
-#### Development Tools
-- **Testing**: Jest, Pytest
-- **API Documentation**: OpenAPI/Swagger
-- **Logging**: Winston, Python logging
-- **Version Control**: Git
+| Layer | Technology |
+|-------|-----------|
+| Frontend | React 18, Recharts, Axios |
+| User Service | Node.js, Express, PostgreSQL, Redis, JWT |
+| Product Service | Node.js, Express, PostgreSQL, Redis |
+| Order Service | Node.js, Express, PostgreSQL, Kafka |
+| Analytics + AI | Python, FastAPI, ClickHouse, Kafka, Scikit-learn |
+| Infrastructure | Docker, Kafka, Redis, Zookeeper |
+| CI/CD | GitHub Actions, CodeQL, Trivy |
 
 ---
 
-##  Quick Start
+## AI Features
+
+### Product Recommendation Engine
+Built with **scikit-learn** using collaborative filtering:
+
+- **Popularity-based**: Most purchased products
+- **User-based**: Personalized recommendations from purchase history
+- **Item-based**: "Customers also bought..." similarity
+- **Cold Start**: Handles new users with trending products
+```python
+# AI Endpoints
+GET /api/ai/recommendations/popular?limit=5
+GET /api/ai/recommendations/user/{user_id}?limit=5
+GET /api/ai/recommendations/product/{product_id}?limit=5
+POST /api/ai/train
+GET /api/ai/model/status
+```
+
+---
+
+## Quick Start
 
 ### Prerequisites
-
 - Docker Desktop (20.x+)
-- Docker Compose (2.x+)
-- Node.js (20.x+) - for local development
-- Python (3.11+) - for local development
-- 8GB RAM minimum (16GB recommended)
+- Node.js (20.x+)
+- 8GB RAM minimum
 
 ### Run the Platform
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/cloudcart-platform.git
-cd cloudcart-platform
+git clone https://github.com/Sakshi3027/cloudcart-analytics-platform.git
+cd cloudcart-analytics-platform
 
-# Start all services
-docker-compose up --build
+# Start all backend services
+docker-compose up -d
 
 # Wait for services to be ready (~2-3 minutes)
-# Check health endpoints
-curl http://localhost:3001/health  # User Service
-curl http://localhost:3002/health  # Product Service
-curl http://localhost:3003/health  # Order Service
-curl http://localhost:3004/health  # Analytics Service
+# Check health
+curl http://localhost:3001/health
+curl http://localhost:3002/health
+curl http://localhost:3003/health
+curl http://localhost:3004/health
+
+# Start the dashboard
+cd dashboard
+npm install
+npm run dev
 ```
 
-**Services will be available at:**
-- User Service: http://localhost:3001
-- Product Service: http://localhost:3002
-- Order Service: http://localhost:3003
-- Analytics Service: http://localhost:3004
+**Open:** http://localhost:5174
 
 ---
 
-##  API Documentation
+## API Documentation
 
-### User Service (Port 3001)
+### Services & Ports
+
+| Service | Port | Description |
+|---------|------|-------------|
+| User Service | 3001 | Authentication & user management |
+| Product Service | 3002 | Product catalog & inventory |
+| Order Service | 3003 | Order processing + Kafka events |
+| Analytics Service | 3004 | Real-time metrics + AI recommendations |
+| Dashboard | 5174 | React analytics dashboard |
+
+### Key Endpoints
 ```bash
-# Register a new user
+# User Service
 POST /api/users/register
-{
-  "email": "user@example.com",
-  "password": "SecurePass123",
-  "first_name": "John",
-  "last_name": "Doe"
-}
-
-# Login
 POST /api/users/login
-{
-  "email": "user@example.com",
-  "password": "SecurePass123"
-}
+GET  /api/users/profile
 
-# Get profile (requires JWT token)
-GET /api/users/profile
-Authorization: Bearer <token>
-```
-
-### Product Service (Port 3002)
-```bash
-# Create product
+# Product Service
 POST /api/products
-{
-  "name": "iPhone 15 Pro",
-  "description": "Latest smartphone",
-  "price": 999.99,
-  "category_name": "Electronics",
-  "inventory_count": 50,
-  "sku": "IPHONE-15-PRO"
-}
+GET  /api/products
+GET  /api/products/:id
 
-# Get all products (with filters)
-GET /api/products?category=Electronics&search=iphone&minPrice=500&maxPrice=1500
-
-# Get single product
-GET /api/products/:id
-```
-
-### Order Service (Port 3003)
-```bash
-# Create order (publishes Kafka event)
+# Order Service
 POST /api/orders
-Authorization: Bearer <token>
-{
-  "user_id": "user-uuid",
-  "items": [
-    {
-      "product_id": "product-uuid",
-      "quantity": 2
-    }
-  ],
-  "shipping_address": "123 Main St, City, State 12345"
-}
+GET  /api/orders/:id
+PUT  /api/orders/:id/status
 
-# Get order by ID
-GET /api/orders/:id
+# Analytics Service
+GET  /api/analytics/dashboard
+GET  /api/analytics/sales/daily?days=7
+GET  /api/analytics/products/top-selling?limit=10
 
-# Update order status
-PUT /api/orders/:id/status
-{
-  "status": "confirmed"
-}
-
-# Cancel order
-POST /api/orders/:id/cancel
-```
-
-### Analytics Service (Port 3004)
-```bash
-# Get dashboard metrics
-GET /api/analytics/dashboard
-
-# Get daily sales
-GET /api/analytics/sales/daily?days=7
-
-# Get top selling products
-GET /api/analytics/products/top-selling?limit=10
-
-# Get user activity
-GET /api/analytics/users/activity?days=30
-
-# Get order status distribution
-GET /api/analytics/orders/status-distribution
+# AI Recommendations
+GET  /api/ai/recommendations/popular
+GET  /api/ai/recommendations/user/:userId
+POST /api/ai/train
 ```
 
 ---
 
-##  Key Features Deep Dive
-
-### 1. Event-Driven Architecture
-
-**Kafka Topics:**
-- `order.created` - New order events
-- `order.confirmed` - Order confirmation events
-- `order.shipped` - Shipping events
-- `order.delivered` - Delivery events
-- `order.cancelled` - Cancellation events
-
-**Flow:**
-1. Order Service publishes events to Kafka
-2. Analytics Service consumes events in real-time
-3. Data processed and stored in ClickHouse
-4. Instant analytics available via API
-
-### 2. Real-Time Analytics
-
-**Metrics Tracked:**
-- Total orders and revenue
-- Daily/weekly/monthly sales trends
-- Top-selling products
-- User purchase patterns
-- Order status distribution
-- Average order value
-- Conversion metrics
-
-**Technology:** ClickHouse (columnar database) provides sub-second query performance on millions of records.
-
-### 3. Security Features
-
-- JWT-based authentication
-- Password hashing with bcrypt (10 rounds)
-- Rate limiting (100 requests/15 min per IP)
-- Helmet.js security headers
-- Input validation with Joi
-- SQL injection prevention
-- CORS configuration
-
-### 4. Performance Optimization
-
-- Redis caching (session data, frequently accessed products)
-- Database connection pooling
-- Optimized database indexes
-- Query result caching
-- Async/await patterns
-- Graceful shutdown handling
+## Event-Driven Flow
+```
+Order Created
+    ↓
+Order Service (PostgreSQL)
+    ↓
+Kafka Event Published (order.created)
+    ↓
+Analytics Service Consumer
+    ↓
+ClickHouse Storage
+    ↓
+Real-time Dashboard Update
+    ↓
+AI Model Retrain
+```
 
 ---
 
 ## Performance Metrics
 
-Based on local testing:
-
 | Metric | Value |
 |--------|-------|
 | Order Creation | ~200ms p95 |
-| Product Search | ~50ms p95 |
 | Analytics Query | ~100ms p95 |
+| AI Recommendation | ~50ms p95 |
 | Event Processing | Real-time (<1s) |
-| Concurrent Users | 100+ supported |
+| Dashboard Refresh | Every 30s |
 
 ---
 
 ## Testing
 ```bash
-# Run tests for all services
-docker-compose run user-service npm test
-docker-compose run product-service npm test
-docker-compose run order-service npm test
-docker-compose run analytics-service pytest
+# All tests run automatically via GitHub Actions
+# Manual testing:
 
-# Run with coverage
-docker-compose run user-service npm test -- --coverage
-```
+# Backend health checks
+curl http://localhost:3001/health
+curl http://localhost:3002/health
+curl http://localhost:3003/health
+curl http://localhost:3004/health
 
----
-
-## Configuration
-
-### Environment Variables
-
-Each service has its own `.env` file:
-```bash
-# services/user-service/.env
-PORT=3001
-NODE_ENV=development
-DB_HOST=user-postgres
-JWT_SECRET=your-secret-key
-REDIS_HOST=redis
-```
-
-### Scaling Services
-```bash
-# Scale a specific service
-docker-compose up --scale order-service=3
-
-# View running instances
-docker-compose ps
+# Test AI recommendations
+curl http://localhost:3004/api/ai/recommendations/popular
+curl -X POST http://localhost:3004/api/ai/train
 ```
 
 ---
 
 ## Project Structure
 ```
-cloudcart-platform/
+cloudcart-analytics-platform/
+├── .github/
+│   └── workflows/          # CI/CD pipelines
+│       ├── test.yml        # Automated testing
+│       ├── build.yml       # Docker builds + security
+│       └── codeql.yml      # Security analysis
 ├── services/
-│   ├── user-service/          # User authentication & management
-│   ├── product-service/       # Product catalog
-│   ├── order-service/         # Order processing + Kafka producer
-│   └── analytics-service/     # Real-time analytics + Kafka consumer
-├── infrastructure/
-│   ├── terraform/             # IaC for AWS deployment
-│   └── kubernetes/            # K8s manifests
-├── monitoring/
-│   ├── prometheus/            # Metrics collection
-│   └── grafana/              # Visualization
+│   ├── user-service/       # Node.js auth service
+│   ├── product-service/    # Node.js catalog service
+│   ├── order-service/      # Node.js order service
+│   └── analytics-service/  # Python analytics + AI
+│       └── src/ai/         # ML recommendation engine
+├── dashboard/              # React analytics dashboard
+│   └── src/
+│       ├── components/     # UI components
+│       └── services/       # API clients
 ├── docs/
+│   ├── diagrams/           # Architecture diagrams
 │   ├── API_DOCUMENTATION.md
 │   ├── ARCHITECTURE.md
 │   └── SETUP_GUIDE.md
-├── docker-compose.yml         # Local orchestration
-└── README.md
+└── docker-compose.yml      # Local orchestration
 ```
 
 ---
 
-## Deployment
+## What This Demonstrates
 
-### Local Development
-```bash
-docker-compose up
-```
-
-### Production (Kubernetes)
-```bash
-# Apply Kubernetes manifests
-kubectl apply -f infrastructure/kubernetes/
-
-# Or use Helm
-helm install cloudcart ./charts/cloudcart
-```
-
-### Cloud Providers
-- **AWS**: EKS + RDS + ElastiCache + MSK
-- **GCP**: GKE + Cloud SQL + Memorystore + Pub/Sub
-- **Azure**: AKS + Azure Database + Redis Cache + Event Hubs
-
----
-
-## Learning Outcomes
-
-This project demonstrates:
-
-✅ **Microservices Architecture** - Service decomposition, inter-service communication  
+✅ **Microservices Architecture** - Service decomposition, independent scaling  
 ✅ **Event-Driven Design** - Kafka, async messaging, eventual consistency  
-✅ **Database Design** - Multiple databases, data modeling, indexing  
-✅ **Caching Strategies** - Redis, cache invalidation, performance optimization  
-✅ **API Design** - RESTful APIs, versioning, documentation  
-✅ **Authentication** - JWT, password security, session management  
-✅ **Containerization** - Docker, multi-stage builds, orchestration  
-✅ **Data Processing** - Real-time analytics, streaming data  
+✅ **AI/ML Integration** - Real-world ML in production microservices  
+✅ **Real-Time Processing** - Stream processing, live dashboards  
+✅ **Full-Stack Development** - React + Node.js + Python  
+✅ **Database Expertise** - PostgreSQL + ClickHouse + Redis  
+✅ **DevOps & CI/CD** - GitHub Actions, Docker, security scanning  
 ✅ **Production Patterns** - Health checks, logging, error handling  
-✅ **DevOps** - CI/CD ready, infrastructure as code  
 
 ---
 
-## Future Enhancements
+## Roadmap
 
-- [ ] Kubernetes deployment with Helm charts
-- [ ] CI/CD pipeline (GitHub Actions)
-- [ ] Monitoring stack (Prometheus + Grafana)
-- [ ] Distributed tracing (Jaeger)
-- [ ] Service mesh (Istio)
-- [ ] API Gateway (Kong/NGINX)
-- [ ] GraphQL API layer
-- [ ] Machine learning recommendations
-- [ ] Mobile app (React Native)
-- [ ] Admin dashboard (React)
+- [ ] AWS deployment (EKS + RDS + MSK)
+- [ ] Kubernetes manifests with Helm
+- [ ] Prometheus + Grafana monitoring
+- [ ] Distributed tracing with Jaeger
+- [ ] GraphQL API gateway
+- [ ] Advanced ML models (neural collaborative filtering)
 
 ---
 
-## License
+## Documentation
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+- [API Documentation](docs/API_DOCUMENTATION.md)
+- [Architecture Guide](docs/ARCHITECTURE.md)
+- [Setup Guide](docs/SETUP_GUIDE.md)
 
 ---
 
 ## Author
 
-**Sakshi**
-- GitHub: [Sakshi3027](https://github.com/Sakshi3027)
-- Email: sakshchavan30@gmail.com
+**Sakshi Chavan**
+- GitHub: [@Sakshi3027](https://github.com/Sakshi3027)
 
 ---
 
 ## Acknowledgments
 
-- Inspired by microservices architectures at Netflix, Uber, and Airbnb
-- Built with modern cloud-native technologies
-- Designed for scalability and production readiness
+Inspired by microservices architectures at Netflix, Uber, and Airbnb.
 
 ---
 
-## Additional Resources
-
-- [API Documentation](docs/API_DOCUMENTATION.md)
-- [Architecture Decisions](docs/ARCHITECTURE.md)
-- [Setup Guide](docs/SETUP_GUIDE.md)
-- [Contributing Guidelines](CONTRIBUTING.md)
-
----
